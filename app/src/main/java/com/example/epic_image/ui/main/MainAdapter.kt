@@ -5,18 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.epic_image.R
-import com.example.epic_image.repository.model.EpicResponseItem
-import com.example.epic_image.utils.ApiKey
-import kotlinx.android.synthetic.main.item_list.view.*
-import javax.security.auth.callback.Callback
+import com.example.epic_image.repository.model.DatesResponseItem
+import com.example.epic_image.ui.dates.CallbackDateItemClick
+import kotlinx.android.synthetic.main.item_date_list.view.*
 
 class MainAdapter(
     private val context: Context,
-    private val callbackItemClick: CallbackItemClick,
-    private val epicList: List<EpicResponseItem>?
+    private val callbackDateItemClick: CallbackDateItemClick,
+    private val dateList: List<DatesResponseItem>?
 
 ) : RecyclerView.Adapter<MainAdapter.MainHolder>() {
 
@@ -25,31 +22,23 @@ class MainAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_date_list, parent, false)
         return MainHolder(view)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        epicList?.get(position).let { epic ->
-
-            val dateUrl = epic?.date?.replace("-", "/")
-            val imageUrl = "https://api.nasa.gov/EPIC/archive/natural/${dateUrl}/png/${epic?.image}.png?api_key=${ApiKey.API_KEY}"
-
-            Glide.with(context)
-                .load(imageUrl)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                )
-                .into(holder.view.imageCardView)
+        dateList?.get(position).let { date ->
+            holder.view.cardView.dateText.text = date?.date
 
             holder.view.cardView.setOnClickListener {
-                callbackItemClick.onItemClick(epic!!)
+                callbackDateItemClick.onItemClick(date!!)
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return epicList!!.size
+        if (dateList == null) {
+            return 0
+        } else return dateList.size
     }
 }

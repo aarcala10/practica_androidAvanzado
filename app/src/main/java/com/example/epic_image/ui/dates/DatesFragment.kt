@@ -68,15 +68,13 @@ class DatesFragment : Fragment(), CallbackDateItemClick {
             override fun onFailure(t: Throwable, res: Response<*>?) {
                 mAdapter = DatesAdapter(activity!!.applicationContext, this@DatesFragment, dateList)
                 recyclerViewDateList.adapter = mAdapter
-
-
             }
         })
     }
 
 
     override fun onItemClick(dateItemClick: DatesResponseItem) {
-        val date = dateItemClick.date?.replace("-","/")
+        val date = dateItemClick.date
         activity?.let { fragment ->
             Intent(fragment, EpicsActivity::class.java).apply {
 

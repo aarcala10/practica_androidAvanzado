@@ -18,7 +18,7 @@ import retrofit2.Response
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class EpicsFragment() : Fragment(), CallbackEpicItemClick {
+class EpicsFragment() : Fragment() {
 
     private val dateSelect by lazy { arguments?.getString(date) }
     companion object {
@@ -87,7 +87,4 @@ class EpicsFragment() : Fragment(), CallbackEpicItemClick {
         mAdapter!!.notifyDataSetChanged()
     }
 
-    override fun onItemClick(epicResponseItem: EpicResponseItem) {
-        TODO("Not yet implemented")
-    }
 }

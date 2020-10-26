@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.epic_image.repository.model.EpicResponseItem
+import com.example.epic_image.repository.model.DatesResponseItem
 
-@Database(entities = [EpicResponseItem::class], version = 1, exportSchema = false)
+@Database(entities = [DatesResponseItem::class], version = 1, exportSchema = false)
 abstract class EpicRoomDatabase : RoomDatabase() {
 
     abstract fun epicDao(): EpicDao
@@ -19,7 +19,7 @@ abstract class EpicRoomDatabase : RoomDatabase() {
             if (instance == null) {
 
                 synchronized(EpicRoomDatabase::class) {
-                    instance = Room.databaseBuilder(context.applicationContext, EpicRoomDatabase::class.java, "epic_db")
+                    instance = Room.databaseBuilder(context.applicationContext, EpicRoomDatabase::class.java, "date_db")
                         .allowMainThreadQueries()
                         .build()
                 }

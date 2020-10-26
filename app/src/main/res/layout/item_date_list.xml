@@ -24,7 +24,7 @@
             android:id="@+id/dateText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Hola"
+            android:text="DATE"
             android:textSize="24sp"
             android:textColor="@color/black"
             android:gravity="center"

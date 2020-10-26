@@ -1,5 +1,6 @@
 package com.example.epic_image.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.telecom.Call
 import androidx.fragment.app.Fragment
@@ -10,20 +11,23 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.epic_image.R
-import com.example.epic_image.repository.model.EpicResponseItem
+import com.example.epic_image.repository.model.DatesResponseItem
+import com.example.epic_image.ui.dates.CallbackDateItemClick
+import com.example.epic_image.ui.epics.EpicsActivity
 import com.example.epic_image.utils.CustomViewModelFactory
 import kotlinx.android.synthetic.main.fragment_main.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class MainFragment : Fragment(), CallbackItemClick {
+class MainFragment : Fragment(), CallbackDateItemClick {
 
     companion object {
         const val TAG = "MainFragment"
         fun newInstance() = MainFragment()
     }
 
+    private var dateList: List<DatesResponseItem>? = null
     private var mAdapter: MainAdapter? = null
 
     private val mViewmodel: MainFragmentViewModel by lazy {
@@ -42,7 +46,7 @@ class MainFragment : Fragment(), CallbackItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        getLocalAllEpic()
+        getLocalAllDates()
 
     }
 
@@ -52,14 +56,29 @@ class MainFragment : Fragment(), CallbackItemClick {
         recyclerViewMainList.setHasFixedSize(false)
     }
 
-    private fun getLocalAllEpic() {
-        mViewmodel.getLocalAllEpic().observe(viewLifecycleOwner, Observer { epicList ->
-            mAdapter = MainAdapter(activity!!.applicationContext, this, epicList)
+    private fun getLocalAllDates() {
+        mViewmodel.getLocalAllDate().observe(viewLifecycleOwner, Observer { dateList ->
+            mAdapter = MainAdapter(activity!!.applicationContext, this, dateList)
             recyclerViewMainList.adapter = mAdapter
         })
     }
 
-    override fun onItemClick(epicResponseItem: EpicResponseItem) {
 
+    override fun onItemClick(datesResponseItem: DatesResponseItem) {
+        val date = datesResponseItem.date
+        activity?.let { fragment ->
+            Intent(fragment, EpicsActivity::class.java).apply {
+
+                arguments = Bundle().apply {
+                    putSerializable(EpicsActivity.OBJECT_DATE, datesResponseItem)
+                }
+                arguments?.let { args ->
+                    putExtras(args)
+                }
+
+                putExtra("EXTRA_DATE", date)
+                fragment.startActivityForResult(this, EpicsActivity.REQUEST_CODE)
+            }
+        }
     }
 }

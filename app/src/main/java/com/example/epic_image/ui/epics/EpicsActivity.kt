@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.epic_image.R
+import kotlinx.android.synthetic.main.activity_epics.*
 
 
 class EpicsActivity : AppCompatActivity() {
@@ -23,12 +24,13 @@ class EpicsActivity : AppCompatActivity() {
 
     }
 
-    private fun init(){
+    private fun init() {
         setContentView(R.layout.activity_epics)
 
         intent?.let {
-            if(it.getStringExtra("EXTRA_DATE")!= null){
+            if (it.getStringExtra("EXTRA_DATE") != null) {
                 val date = it.getStringExtra("EXTRA_DATE")
+                toolbarEpics.title = date
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.contentEpics, EpicsFragment.newInstance(date.toString()))
                     .commitNow()
