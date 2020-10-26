@@ -26,6 +26,7 @@ class DatesFragmentViewModel(private val context: Application) : ViewModel() {
 
             override fun onFailure(call: Call<DatesResponse>, t: Throwable) {
                 cb.onFailure(t)
+
             }
         })
     }

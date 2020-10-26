@@ -31,7 +31,6 @@ class EpicsAdapter(
     override fun onBindViewHolder(holder: EpicHolder, position: Int) {
         epicsList?.get(position).let { epic ->
             holder.view.cardView.dateText.text = epic?.date
-
         }
 
     }

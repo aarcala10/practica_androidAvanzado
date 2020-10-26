@@ -14,7 +14,8 @@ class EpicsFragmentViewModel(private val context: Application) : ViewModel() {
 
 
     fun getEpics(date: String, cb: EpicService.CallbackResponse<EpicsResponse>) {
-        EpicService().epicApi.getEpicImages(date,ApiKey.API_KEY).enqueue(object : Callback<EpicsResponse> {
+        val dateFormated = date
+        EpicService().epicApi.getEpicImages(dateFormated.toString(),ApiKey.API_KEY).enqueue(object : Callback<EpicsResponse> {
 
             override fun onResponse(call: Call<EpicsResponse>, response: Response<EpicsResponse>) {
                 if (response.isSuccessful && response.body() != null) {

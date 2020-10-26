@@ -10,19 +10,30 @@ import com.example.epic_image.R
 
 class EpicsActivity : AppCompatActivity() {
     companion object {
-        const val TAG = "DatesActivity"
+        const val TAG = "EpicsActivity"
         const val OBJECT_DATE = "OBJECT_DATE"
         const val REQUEST_CODE = 200
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        init()
+
+
+    }
+
+    private fun init(){
         setContentView(R.layout.activity_epics)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.contentEpics, EpicsFragment.newInstance())
-            .commitNow()
-
+        intent?.let {
+            if(it.getStringExtra("EXTRA_DATE")!= null){
+                val date = it.getStringExtra("EXTRA_DATE")
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.contentEpics, EpicsFragment.newInstance(date.toString()))
+                    .commitNow()
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

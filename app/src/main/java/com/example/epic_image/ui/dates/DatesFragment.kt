@@ -27,6 +27,7 @@ class DatesFragment : Fragment(), CallbackDateItemClick {
     companion object {
         const val TAG = "DatesFragment"
         fun newInstance() = DatesFragment()
+
     }
 
     private var dateList: List<DatesResponseItem>? = null
@@ -47,7 +48,7 @@ class DatesFragment : Fragment(), CallbackDateItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        getAllEpic()
+        getAllDates()
     }
 
     private fun init() {
@@ -56,15 +57,18 @@ class DatesFragment : Fragment(), CallbackDateItemClick {
         recyclerViewDateList.setHasFixedSize(false)
     }
 
-    private fun getAllEpic() {
+    private fun getAllDates() {
         mViewmodel.getDates(object : EpicService.CallbackResponse<DatesResponse> {
             override fun onResponse(response: DatesResponse) {
-                val dateList = response
+                dateList = response
                 mAdapter = DatesAdapter(activity!!.applicationContext, this@DatesFragment, dateList)
                 recyclerViewDateList.adapter = mAdapter
             }
 
             override fun onFailure(t: Throwable, res: Response<*>?) {
+                mAdapter = DatesAdapter(activity!!.applicationContext, this@DatesFragment, dateList)
+                recyclerViewDateList.adapter = mAdapter
+
 
             }
         })
@@ -84,7 +88,6 @@ class DatesFragment : Fragment(), CallbackDateItemClick {
                 }
 
                 putExtra("EXTRA_DATE", date)
-
                 fragment.startActivityForResult(this, REQUEST_CODE)
             }
         }

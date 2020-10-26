@@ -35,7 +35,6 @@ class DatesAdapter(
         }
     }
 
-
     override fun getItemCount(): Int {
         return dateList!!.size
     }

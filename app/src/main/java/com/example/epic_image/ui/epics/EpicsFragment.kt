@@ -18,14 +18,22 @@ import retrofit2.Response
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class EpicsFragment : Fragment(), CallbackEpicItemClick {
+class EpicsFragment() : Fragment(), CallbackEpicItemClick {
 
+    private val dateSelect by lazy { arguments?.getString(date) }
     companion object {
         const val TAG = "EpicsFragment"
-        const val REQUEST_CODE = 200
-        const val DATE = "EXTRA_DATE"
 
-        fun newInstance() = EpicsFragment()
+        private const val date = "";
+
+        fun newInstance(dateSelect: String): Fragment {
+            val args = Bundle()
+            args.putString(date,dateSelect)
+            val fragment = EpicsFragment()
+            fragment.arguments = args
+            return fragment
+        }
+
     }
 
     private var epicList: List<EpicResponseItem>? = null
@@ -43,19 +51,22 @@ class EpicsFragment : Fragment(), CallbackEpicItemClick {
 
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        getAllEpic(DATE)
+        dateSelect?.let { getAllEpic(it) }
     }
 
     private fun init() {
         recyclerViewEpicsList.layoutManager = LinearLayoutManager(activity)
         recyclerViewEpicsList.isNestedScrollingEnabled = false
         recyclerViewEpicsList.setHasFixedSize(false)
+
     }
 
     private fun getAllEpic(date: String) {
+
         mViewmodel.getEpics(date, object : EpicService.CallbackResponse<EpicsResponse> {
             override fun onResponse(response: EpicsResponse) {
                 val epicsList = response
@@ -65,7 +76,6 @@ class EpicsFragment : Fragment(), CallbackEpicItemClick {
             }
 
             override fun onFailure(t: Throwable, res: Response<*>?) {
-
             }
 
         })
